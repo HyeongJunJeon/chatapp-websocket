@@ -3,10 +3,3 @@
 ## 출처
 
 코딩알려주는누나 [웹소켓 강의](https://www.youtube.com/watch?v=uE9Ncr6qInQ).
-
-## ENV
-
-```
-PORT=5001
-DB=mongodb://localhost:27017/kakao-talk
-```
