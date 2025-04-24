@@ -1,13 +1,15 @@
-import "./App.css";
-import socket from "./server";
 import { useEffect, useState } from "react";
-import InputField from "./components/InputField/InputField";
-import MessageContainer from "./components/MessageContainer/MessageContainer";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import ChatPage from "./pages/ChatPage/ChatPage";
+import RoomListPage from "./pages/RoomListPage/RoomListPage";
+import socket from "./server";
 
 function App() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
   const askUserName = () => {
     const userName = prompt("Please enter your name");
@@ -32,20 +34,21 @@ function App() {
     socket.on("message", (message) => {
       setMessageList((prev) => prev.concat(message));
     });
+    socket.on("rooms", (res) => {
+      setRooms(res);
+    });
     askUserName();
   }, []);
 
+  console.log("rooms", rooms);
+
   return (
-    <div>
-      <div className="App">
-        <MessageContainer messageList={messageList} user={user} />
-        <InputField
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<RoomListPage rooms={rooms} />} />
+        <Route exact path="/room/:id" element={<ChatPage user={user} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
