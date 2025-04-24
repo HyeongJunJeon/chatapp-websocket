@@ -7,8 +7,6 @@ import socket from "./server";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
   const [rooms, setRooms] = useState([]);
 
   const askUserName = () => {
@@ -20,27 +18,12 @@ function App() {
     });
   };
 
-  const sendMessage = (event) => {
-    event.preventDefault();
-
-    socket.emit("sendMessage", message, (response) => {
-      console.log("response", response);
-    });
-
-    setMessage("");
-  };
-
   useEffect(() => {
-    socket.on("message", (message) => {
-      setMessageList((prev) => prev.concat(message));
-    });
     socket.on("rooms", (res) => {
       setRooms(res);
     });
     askUserName();
   }, []);
-
-  console.log("rooms", rooms);
 
   return (
     <BrowserRouter>

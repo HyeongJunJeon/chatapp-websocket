@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import socket from "../../server";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./RoomListPageStyle.css";
 
